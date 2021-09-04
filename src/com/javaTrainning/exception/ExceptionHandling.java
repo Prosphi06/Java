@@ -9,6 +9,7 @@ public class ExceptionHandling {
             int num = Integer.parseInt("234");
                     System.out.println(num);
         }catch (NumberFormatException ex) {
+
             System.out.println("Number format occur");
         }
 
