@@ -1,0 +1,21 @@
+
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(›ĞÑ’ÿÿÿÿÿ
+]
+java:S2259"BA "NullPointerException" could be thrown; "word" is nullable here.(­Î›—ıÿÿÿÿ
+K
+java:S1854"5Remove this useless assignment to local variable "c".(½¼âĞ
+D
+java:S6212	"/Declare this local variable with "var" instead.(å‰ÿ
+S	java:S106
+"9Replace this use of System.out or System.err by a logger.(í Âõøÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(³¦†
+S	java:S106"9Replace this use of System.out or System.err by a logger.(­Î›—ıÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¶¤öÓûÿÿÿÿ
+J
+java:S6212"/Declare this local variable with "var" instead.(ğÛ²¸øÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(û´¸¥
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ÀÃÃˆüÿÿÿÿ
+E
+java:S6212"/Declare this local variable with "var" instead.(½¼âĞ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(Áß‡Ü
+N	java:S106 "9Replace this use of System.out or System.err by a logger.(§ñ£
