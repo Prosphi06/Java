@@ -10,6 +10,7 @@ public class StudentCollection {
         Student st3 = new Student(3,"Peter Cozea", "C");
 
         List<Student> studentsList = new ArrayList<>();
+
        studentsList.add(st1);
        studentsList.add(st2);
        studentsList.add(st3);

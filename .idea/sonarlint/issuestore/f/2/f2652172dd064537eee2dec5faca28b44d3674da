@@ -1,9 +1,0 @@
-
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(İéÅ
-e	java:S116"PRename this field "EmpNo" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºó‚Æ
-B
-java:S1068",Remove this unused "fullName" private field.(—ÿø
-?
-java:S1068")Remove this unused "EmpNo" private field.(ºó‚Æ
-G
-java:S1068",Remove this unused "position" private field.(©ùéäıÿÿÿÿ
