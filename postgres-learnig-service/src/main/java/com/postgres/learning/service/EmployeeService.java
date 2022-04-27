@@ -1,7 +1,9 @@
 package com.postgres.learning.service;
 
 import com.postgres.learning.exception.ResourceNotFoundException;
+import com.postgres.learning.persistance.entity.Department;
 import com.postgres.learning.persistance.entity.Employee;
+import com.postgres.learning.persistance.repo.DepartmentRepository;
 import com.postgres.learning.persistance.repo.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,18 @@ import java.util.List;
 public class EmployeeService {
 
     final EmployeeRepository repository;
+    final DepartmentRepository departmentRepo;
 
     public Employee createEmployee(Employee employee){
+       // return repository.save(employee);
+//        Department dept = departmentRepo.findById(employee.getDepartment().getId()).orElse(null);
+//        if (null == dept) {
+//            dept = new Department();
+//        }
+//        dept.setDeptName(employee.getDepartment().getDeptName());
+//        employee.setDepartment(dept);
         return repository.save(employee);
+
     }
 
     public List<Employee> listEmployees(){
