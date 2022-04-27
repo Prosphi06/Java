@@ -12,20 +12,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.runner.RunWith;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -35,11 +30,8 @@ public class EmployeeRepoTest {
     @MockBean
     private BulkService service;
 
-    @Value("${app.document-root}")String documentRoot;
-
     @Autowired
     EmployeeRepo employeeRepo;
-
 
     @Test
     public void test_for_saving_employees() {
@@ -52,14 +44,15 @@ public class EmployeeRepoTest {
     }
 
 
-//    @Test
-//    public void test_handleFileUpload_NoFileProvided() throws Exception{
-//        MockMultipartHttpServletRequestBuilder multipartRequest =
-//                MockMvcRequestBuilders.multipart("/api/files/upload");
-//
-//        mockMvc.perform(multipartRequest)
-//                .andExpect(status().isBadRequest());
-//    }
+   @Test
+   public void test_returned_page_size() {
+         assertThat(
+                employeeRepo
+                        .findAll(PageRequest.of(0, 10))
+                        .getContent()
+                        .size())
+                .isEqualTo(10);
+    }
 
     @Test
     public void test_for_getting_employees() {

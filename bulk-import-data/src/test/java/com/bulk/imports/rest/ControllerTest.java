@@ -3,7 +3,6 @@ package com.bulk.imports.rest;
 import com.bulk.imports.persistance.entity.Employee;
 import com.bulk.imports.persistance.repository.EmployeeRepo;
 import com.bulk.imports.service.BulkService;
-import static com.bulk.imports.PageableAssert.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +25,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.InputStream;
-import java.util.Collections;
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.mockito.Mockito.verify;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,7 +55,7 @@ public class ControllerTest {
     public void init() {
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
         is = controller.getClass().getClassLoader().getResourceAsStream("Employees.xlsx");
-       // JacksonTester.initFields(this, new ObjectMapper());
+
    }
 
 
@@ -87,7 +87,6 @@ public class ControllerTest {
         mvc.perform(MockMvcRequestBuilders.multipart("/api/upload")
                         //.file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
-                //.andExpect(MockMvcResultMatchers.status().is(404))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
@@ -100,45 +99,48 @@ public class ControllerTest {
     }
 
     @Test
-    public void failure_tests_for_createTransfer_endPoint() throws Exception {
+    public void failure_tests_for_retrieving_employee_endpoint() throws Exception {
         mvc.perform(post("/api/employees")
+                        .param("pageNo", "1")
+                        .param("pageSize", "10")
+                        .param("sort", "department")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isMethodNotAllowed());
 
         mvc.perform(get("/api/v1/employees")
+                        .param("pageNo", "1")
+                        .param("pageSize", "10")
+                        .param("sort", "department")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isNotFound());
     }
 
-    @Test
-    public void test_for_paging_endpoint() throws Exception {
-        Employee employee = new Employee(1, "Pro", "Seen", "pro@gmail.com", "IT");
-        Page<Employee> page = new PageImpl<>(Collections.singletonList(employee));
-       // given(service.getAllEmployees(any(),any(),any())).willReturn(page);
-        //when(service.getAllEmployees(anyInt(),anyInt(),anyString())).thenReturn(page);
-        mvc.perform(get("/api/employees")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$.content[0].department", is(employee.getDepartment())));
-    }
+//    @Test
+//    public void test_for_paging_endpoint() throws Exception {
+//        int pageNo = 0;
+//        int pageSize = 2;
+//        String sortBy = "department";
+//
+//        Pageable paging = (Pageable) PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+//        Employee employee = new Employee(1, "Pro", "Seen", "pro@gmail.com", "IT");
+//        Page<Employee> page = new PageImpl<>(Collections.singletonList(employee));
+//        // given(service.getAllEmployees(any(),any(),any())).willReturn(page);
+//
+//        when(service.getAllEmployees(pageNo,pageSize,sortBy)).thenReturn((List<Employee>) page);
+//        mvc.perform(get("/api/employees")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect((ResultMatcher) jsonPath("$.content[0].department", is(employee.getDepartment())));
+//    }
 
     @Test
-    public void test_for_accessing_pageable_endpoint() throws Exception {
+    public void test_for_accessing_param_endpoint() throws Exception {
         mvc.perform(get("/api/employees")
                         .param("pageNo", "1")
                         .param("pageSize", "10")
                         .param("sort", "department")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        // .andExpect((ResultMatcher) jsonPath("$.content[0].department", is(employee.getDepartment())));
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
-        verify(repo).findAll(pageableCaptor.capture());
-        PageRequest pageable = (PageRequest) pageableCaptor.getValue();
+   }
 
-        assertThat(pageable).hasPageNumber(1);
-        assertThat(pageable).hasPageSize(10);
-        assertThat(pageable).hasSort("id", Sort.Direction.ASC);
-        // assertThat(pageable).sor("department", Sort.Direction.ASC);
-
-    }
 }

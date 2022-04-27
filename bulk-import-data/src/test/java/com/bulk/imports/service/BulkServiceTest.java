@@ -33,7 +33,6 @@ public class BulkServiceTest {
 
     @Before
     public void setUp() {
-       // is = service.getClass().getClassLoader().getResourceAsStream("Employees.xlsx");
         service = new BulkService(repo);
     }
 
@@ -60,8 +59,7 @@ public class BulkServiceTest {
 
         Pageable paging = (Pageable) PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
-        Employee employee = new Employee(1, "Pro","Seen", "pro@gmail.com", "IT");
-        Page<Employee> employeePage = new PageImpl<>(Collections.singletonList(employee));
+        Page<Employee> employeePage = new PageImpl<>(employeesList());
         when(repo.findAll( paging)).thenReturn(employeePage);
         Page<Employee> employees = repo.findAll(paging);
         assertEquals(employees.getTotalPages(), 1);
@@ -71,39 +69,43 @@ public class BulkServiceTest {
     public void test_to_sort_employees_page(){
 
         Pageable paging = (Pageable) PageRequest.of(1, 2, Sort.by("department"));
-        List<Employee> employeeList = new ArrayList<Employee>();
-        employeeList.add(new Employee(1, "Pro","Seen", "pro@gmail.com", "IT"));
-        employeeList.add(new Employee(2,"Pee", "Suna", "Peez@gmail.com","HR"));
 
-        Page<Employee> employeePage = new PageImpl<>(employeeList);
+        Page<Employee> employeePage = new PageImpl<>(employeesList());
         when(repo.findAll( paging)).thenReturn(employeePage);
         Page<Employee> employees = repo.findAll(paging);
         assertEquals(employees.getSize(), 2);
-       // assertThat(employees.getSort()).isEqualTo("department");
+    }
+
+    @Test
+    public void test_list_of_all_employees() {
+
+        List<Employee> employeeList = service.getAllEmployees(1, 2, "id");
+        assertThat(employeeList).isNotNull();
     }
 
     @Test
     public void test_get_all_employees() {
 
-        Employee employee=new Employee();
-        List<Employee> list=new ArrayList<Employee>();
-        list.add(employee);
+        when(service.getAllEmployees(1, 10, "id")).thenReturn(employeesList());
+        Page<Employee> pagedTasks = new PageImpl(employeesList());
 
-        when(service.getAllEmployees(1,10,"id")).thenReturn(list);
-        Page<Employee> pagedTasks = new PageImpl(list);
-        when(repo.findAll((Pageable) pagedTasks)).thenReturn(pagedTasks);
-
-        list = service.getAllEmployees(1,10,"id");
-
-       assertThat(list).isNotNull();
+        assertThat(pagedTasks).isNotNull();
     }
 
-//    @Test
-//    public void test_save_all_employees_in_file() throws IOException {
+
+    public List<Employee> employeesList() {
+        List<Employee> employeeList = new ArrayList<Employee>();
+        employeeList.add(new Employee(1, "Pro","Seen", "pro@gmail.com", "IT"));
+        employeeList.add(new Employee(2,"Pee", "Suna", "Peez@gmail.com","HR"));
+        return employeeList;
+    }
+
 //        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "Employees.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", is);
 //
 //        // employeeList= (List<Employee>) mockMultipartFile.getInputStream();
 //      List<Employee> employeeList = service.save(mockMultipartFile);
 //      assertThat(employeeList).isNotNull();
 //    }
+
+
 }
