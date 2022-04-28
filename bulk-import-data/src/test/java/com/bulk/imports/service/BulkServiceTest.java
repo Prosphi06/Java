@@ -2,6 +2,7 @@ package com.bulk.imports.service;
 
 import com.bulk.imports.persistance.entity.Employee;
 import com.bulk.imports.persistance.repository.EmployeeRepo;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,5 +120,31 @@ public class BulkServiceTest {
 //      assertThat(employeeList).isNotNull();
 //    }
 
+    /**
+     * Test for successful saving of employee on save employees method
+     */
+    @Test
+    public void test_for_saving_employees () {
+         List<Employee> employeeList = (List<Employee>) repo.saveAll(employeesList());
+        Assertions.assertThat(employeeList).isNotNull();
+    }
 
+    /**
+     * Test for fail saving employee on save employees method
+     */
+    @Test
+    public void test_for_saving_employees_with_missing_data () {
+        employeesList().add(missingDetails());
+        List<Employee> employeeList = (List<Employee>) repo.saveAll(employeesList());
+        Assertions.assertThat(employeeList).isEmpty();
+    }
+
+    public Employee missingDetails() {
+        return Employee.builder()
+                .firstName("Pro")
+                .lastName("Suna")
+                .email("pro@gmail.com")
+                .department("IT")
+                .build();
+    }
 }
