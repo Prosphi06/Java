@@ -58,7 +58,10 @@ public class ControllerTest {
 
    }
 
-
+    /**
+     * A success test to find out upload end-point is accessible
+     * @throws Exception
+     */
     @Test
     public void test_for_upload_endpoint() throws Exception {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "Employees.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", is);
@@ -72,6 +75,10 @@ public class ControllerTest {
         // Assert.assertEquals("Employees.xlsx", results.getResponse().getContentAsString());
     }
 
+    /**
+     * Failure test for upload endpoint with incorrect URL
+     * @throws Exception
+     */
     @Test
     public void test_for_upload_endpoint_with_wrong_url() throws Exception {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "Employees.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", is);
@@ -82,6 +89,10 @@ public class ControllerTest {
                 .andReturn();
     }
 
+    /**
+     * Failure test for upload endpoint without file
+     * @throws Exception
+     */
     @Test
     public void test_for_upload_endpoint_with_no_file() throws Exception {
         mvc.perform(MockMvcRequestBuilders.multipart("/api/upload")
@@ -91,6 +102,10 @@ public class ControllerTest {
                 .andReturn();
     }
 
+    /**
+     * A success test to find out retrieve employees end-point is accessible
+     * @throws Exception
+     */
     @Test
     public void test_for_accessing_employees_endpoint() throws Exception {
         mvc.perform(get("/api/employees")
@@ -98,6 +113,10 @@ public class ControllerTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * Failure test for retrieve employees endpoint with incorrect URL and method
+     * @throws Exception
+     */
     @Test
     public void failure_tests_for_retrieving_employee_endpoint() throws Exception {
         mvc.perform(post("/api/employees")
@@ -133,6 +152,10 @@ public class ControllerTest {
 //                .andExpect((ResultMatcher) jsonPath("$.content[0].department", is(employee.getDepartment())));
 //    }
 
+    /**
+     * Success endpoint test for retrieve employees with param
+     * @throws Exception
+     */
     @Test
     public void test_for_accessing_param_endpoint() throws Exception {
         mvc.perform(get("/api/employees")

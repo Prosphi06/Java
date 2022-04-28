@@ -7,7 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,16 +28,14 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class BulkServiceTest {
 
-    private InputStream is;
-    @Mock
+    @MockBean
     private EmployeeRepo repo;
+    @Autowired
     private BulkService service;
 
-    @Before
-    public void setUp() {
-        service = new BulkService(repo);
-    }
-
+    /**
+     * Test for successful number of employees retrieved on get employees method
+     */
     @Test
     public void test_to_check_number_of_employees(){
        int pageNo = 0;
@@ -51,6 +51,9 @@ public class BulkServiceTest {
         assertEquals(employees.getNumberOfElements(), 1);
     }
 
+    /**
+     * Test for successful number of pages retrieved on get employees method
+     */
     @Test
     public void get_employees_paged_size(){
         int pageNo = 1;
@@ -65,6 +68,9 @@ public class BulkServiceTest {
         assertEquals(employees.getTotalPages(), 1);
     }
 
+    /**
+     * Test for successful size of employees retrieved on get employees method
+     */
     @Test
     public void test_to_sort_employees_page(){
 
@@ -76,6 +82,9 @@ public class BulkServiceTest {
         assertEquals(employees.getSize(), 2);
     }
 
+    /**
+     * Test for successful retrieving employees on get employees method
+     */
     @Test
     public void test_list_of_all_employees() {
 
@@ -83,6 +92,9 @@ public class BulkServiceTest {
         assertThat(employeeList).isNotNull();
     }
 
+    /**
+     * Test for successful retrieving employees with page on get employees method
+     */
     @Test
     public void test_get_all_employees() {
 
