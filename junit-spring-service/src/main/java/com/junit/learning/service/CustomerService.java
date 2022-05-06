@@ -39,6 +39,10 @@ public class CustomerService {
             return repository.save(customerInfo);
         }
 
+//    public Customer updateCustomer(Customer customer){
+//       return repository.save(customer);
+//    }
+
         public void deleteCustomer(int id){
             Customer customerInfo = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found with id no: " + id));
             repository.delete(customerInfo);

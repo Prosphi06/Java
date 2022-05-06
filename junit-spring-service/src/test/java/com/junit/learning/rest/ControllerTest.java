@@ -40,6 +40,9 @@ public class ControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
+    /**
+     * Happy test case for accessing the create customer End-Point
+     * */
     @Test
     public void test_for_accessing_create_customer_endpoint() throws Exception {
 
@@ -50,12 +53,11 @@ public class ControllerTest {
 
         expectedResults.andDo(print())
                 .andExpect(status().isOk());
-//                .andExpect( jsonPath("$.id", is(customerData().getId())))
-//                .andExpect((ResultMatcher) jsonPath("$.name", is(customerData().getName())))
-//                .andExpect((ResultMatcher) jsonPath("$.email", is(customerData().getEmail())))
-//                .andExpect((ResultMatcher) jsonPath("$.department", is(customerData().getDepartment())));
     }
 
+    /**
+     * Failure test case for accessing the create customer End-Point
+     * */
     @Test
     public void failure_test_for_accessing_create_customer_endpoint() throws Exception {
 
@@ -69,6 +71,9 @@ public class ControllerTest {
 
     }
 
+    /**
+     * Happy test case for accessing the retrieve all customer End-Point
+     * */
     @Test
     public void test_for_accessing_retrieve_customer_endpoint() throws Exception {
         //given --> precondition or setup
@@ -88,6 +93,9 @@ public class ControllerTest {
                 //.andExpect(jsonPath("$.size()", is(customerList.size())));
     }
 
+    /**
+     * Failure test case for accessing retrieve all customer End-Point
+     * */
     @Test
     public void failure_test_for_accessing_retrieve_customer_endpoint() throws Exception {
 
@@ -103,6 +111,9 @@ public class ControllerTest {
         //.andExpect(jsonPath("$.size()", is(customerList.size())));
     }
 
+    /**
+     * Happy test case for accessing retrieve customer by id End-Point
+     * */
     @Test
     public void test_for_accessing_retrieve_customer_byId_endpoint() throws Exception {
        int id = 1;
@@ -115,6 +126,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Failure test case for accessing retrieve customer by id End-Point
+     * */
     @Test
     public void failure_test_for_accessing_retrieve_customer_byId_endpoint() throws Exception {
         int id = 1;
@@ -127,6 +141,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Happy test case for accessing the update customer End-Point
+     * */
     @Test
     public void test_for_accessing_update_customer_endpoint() throws Exception {
         int id = 1;
@@ -142,6 +159,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Failure test case for accessing update customer End-Point
+     * */
     @Test
     public void failure_test_for_accessing_update_customer_endpoint() throws Exception {
         int id = 1;
@@ -154,6 +174,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Happy test case for accessing delete customer End-Point
+     * */
     @Test
     public void test_for_accessing_delete_customer_endpoint() throws Exception {
         int id = 1;
@@ -165,6 +188,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * Failure test case for accessing delete customer End-Point
+     * */
     @Test
     public void failure_test_for_accessing_delete_customer_endpoint() throws Exception {
         int id = 1;
