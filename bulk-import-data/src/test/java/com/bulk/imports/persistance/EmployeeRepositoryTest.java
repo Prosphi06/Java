@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,12 +15,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@TestPropertySource(locations = "classpath:application-junit.properties")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class EmployeeRepositoryTest {
 
     @Autowired
@@ -40,9 +44,10 @@ public class EmployeeRepositoryTest {
     @Test
     public void test_for_saving_employees_with_missing_datails () {
         employeesList().add(missingDetails());
-        List<Employee> employeeList = (List<Employee>) employeeRepo.saveAll(employeesList());
+        List<Employee> employeeList = (List<Employee>) employeeRepo.saveAll(Collections.emptyList());
         Assertions.assertThat(employeeList).isEmpty();
     }
+
     /**
      * Test for successful retrieving employees with paging
      */
@@ -51,7 +56,7 @@ public class EmployeeRepositoryTest {
         //Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
         employeeRepo.saveAll(employeesList());
         List<Employee> employeeList = employeeRepo.findAll();
-        Assertions.assertThat(employeeList).isNotNull();
+        assertThat(employeeList).isNotNull();
     }
 
     /**

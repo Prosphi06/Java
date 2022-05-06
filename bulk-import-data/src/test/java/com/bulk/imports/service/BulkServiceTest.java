@@ -5,9 +5,12 @@ import com.bulk.imports.persistance.repository.EmployeeRepo;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.BDDAssumptions.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -31,14 +35,14 @@ public class BulkServiceTest {
 
     @MockBean
     private EmployeeRepo repo;
-    @Autowired
+    @MockBean
     private BulkService service;
 
     /**
-     * Test for successful number of employees retrieved on get employees method
+     * Failure test for retrieving empty list with page on get employees method
      */
     @Test
-    public void test_to_check_number_of_employees(){
+    public void test_to_retrieve_empty_list_page(){
        int pageNo = 0;
        int pageSize = 2;
        String sortBy = "id";
@@ -48,8 +52,9 @@ public class BulkServiceTest {
         Employee employee = new Employee(1, "Pro","Seen", "pro@gmail.com", "IT");
         Page<Employee> employeePage = new PageImpl<>(Collections.singletonList(employee));
         when(repo.findAll( paging)).thenReturn(employeePage);
-        Page<Employee> employees = repo.findAll(paging);
-        assertEquals(employees.getNumberOfElements(), 1);
+        //Page<Employee> employees = repo.findAll(paging);
+        List<Employee> employees = service.getAllEmployees(pageNo,pageSize,sortBy);
+        assertThat(employees.isEmpty());
     }
 
     /**
@@ -70,26 +75,25 @@ public class BulkServiceTest {
     }
 
     /**
-     * Test for successful size of employees retrieved on get employees method
+     * Failure test for retrieving empty list on get employees method
      */
     @Test
-    public void test_to_sort_employees_page(){
+    public void test_to_retrieve_empty_list(){
 
-        Pageable paging = (Pageable) PageRequest.of(1, 2, Sort.by("department"));
-
-        Page<Employee> employeePage = new PageImpl<>(employeesList());
-        when(repo.findAll( paging)).thenReturn(employeePage);
-        Page<Employee> employees = repo.findAll(paging);
-        assertEquals(employees.getSize(), 2);
+        when(repo.findAll( )).thenReturn(Collections.emptyList());
+        List<Employee> employees = service.getAllEmployees(0, 2, "id");
+        assertEquals(employees.size(), 0);
+        assertThat(employees.isEmpty());
     }
 
     /**
      * Test for successful retrieving employees on get employees method
      */
     @Test
-    public void test_list_of_all_employees() {
-
-        List<Employee> employeeList = service.getAllEmployees(1, 2, "id");
+    public void test_retrieve_all_employees() {
+        //given(repo.findAll()).willReturn(employeesList());
+        when(repo.findAll()).thenReturn(employeesList());
+        List <Employee> employeeList =  service.getAllEmployees(1, 2, "id");
         assertThat(employeeList).isNotNull();
     }
 
@@ -97,9 +101,9 @@ public class BulkServiceTest {
      * Test for successful retrieving employees with page on get employees method
      */
     @Test
-    public void test_get_all_employees() {
-
-        when(service.getAllEmployees(1, 10, "id")).thenReturn(employeesList());
+    public void test_get_all_employees_with_page() {
+        when(repo.findAll()).thenReturn(employeesList());
+        List<Employee> expected = service.getAllEmployees(0, 2, "id");
         Page<Employee> pagedTasks = new PageImpl(employeesList());
 
         assertThat(pagedTasks).isNotNull();
@@ -111,40 +115,5 @@ public class BulkServiceTest {
         employeeList.add(new Employee(1, "Pro","Seen", "pro@gmail.com", "IT"));
         employeeList.add(new Employee(2,"Pee", "Suna", "Peez@gmail.com","HR"));
         return employeeList;
-    }
-
-//        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "Employees.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", is);
-//
-//        // employeeList= (List<Employee>) mockMultipartFile.getInputStream();
-//      List<Employee> employeeList = service.save(mockMultipartFile);
-//      assertThat(employeeList).isNotNull();
-//    }
-
-    /**
-     * Test for successful saving of employee on save employees method
-     */
-    @Test
-    public void test_for_saving_employees () {
-         List<Employee> employeeList = (List<Employee>) repo.saveAll(employeesList());
-        Assertions.assertThat(employeeList).isNotNull();
-    }
-
-    /**
-     * Test for fail saving employee on save employees method
-     */
-    @Test
-    public void test_for_saving_employees_with_missing_data () {
-        employeesList().add(missingDetails());
-        List<Employee> employeeList = (List<Employee>) repo.saveAll(employeesList());
-        Assertions.assertThat(employeeList).isEmpty();
-    }
-
-    public Employee missingDetails() {
-        return Employee.builder()
-                .firstName("Pro")
-                .lastName("Suna")
-                .email("pro@gmail.com")
-                .department("IT")
-                .build();
     }
 }

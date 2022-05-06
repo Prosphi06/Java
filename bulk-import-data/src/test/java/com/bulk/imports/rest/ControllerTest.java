@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.BDDAssumptions.given;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -134,24 +136,6 @@ public class ControllerTest {
                         .andExpect(status().isNotFound());
     }
 
-//    @Test
-//    public void test_for_paging_endpoint() throws Exception {
-//        int pageNo = 0;
-//        int pageSize = 2;
-//        String sortBy = "department";
-//
-//        Pageable paging = (Pageable) PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-//        Employee employee = new Employee(1, "Pro", "Seen", "pro@gmail.com", "IT");
-//        Page<Employee> page = new PageImpl<>(Collections.singletonList(employee));
-//        // given(service.getAllEmployees(any(),any(),any())).willReturn(page);
-//
-//        when(service.getAllEmployees(pageNo,pageSize,sortBy)).thenReturn((List<Employee>) page);
-//        mvc.perform(get("/api/employees")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect((ResultMatcher) jsonPath("$.content[0].department", is(employee.getDepartment())));
-//    }
-
     /**
      * Success endpoint test for retrieve employees with param
      * @throws Exception
@@ -165,5 +149,4 @@ public class ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
    }
-
 }
