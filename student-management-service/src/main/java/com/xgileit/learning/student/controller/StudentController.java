@@ -14,6 +14,11 @@ public class StudentController {
     StudentServiceImp service = new StudentServiceImp();
     ArrayList<String> studentList=new ArrayList();
 
+    @GetMapping(value = "/test")
+    public String sayHelloWorld() {
+        return "Hello Amazon EC2 User";
+    }
+
     @RequestMapping(value = "fetch/{id}", method= RequestMethod.GET)
     public String findById(@PathVariable("id") int StudentId){
         if(StudentId==2) {
